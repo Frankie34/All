@@ -60,9 +60,13 @@ class win(QDialog):
         if self.img.size == 1:
             return
         # 对图像缩放
-        self.img = cv2.resize(self.img,None,fx=0.5, fy=0.5, interpolation = cv2.INTER_CUBIC)
+        # self.img = cv2.resize(self.img,None,fx=0.5, fy=0.5, interpolation = cv2.INTER_CUBIC)
+        erosion_size = 10
+        element = cv2.getStructuringElement(cv2.MORPH_RECT, (2*erosion_size + 1, 2*erosion_size+1), (erosion_size, erosion_size))
+        self.img = cv2.erode(self.img, element)
         self.refreshShow()
 
+    
     def refreshShow(self):
         # 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
         height, width, channel = self.img.shape
